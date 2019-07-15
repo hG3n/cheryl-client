@@ -1,0 +1,21 @@
+<div class="container" fxLayout="column">
+    <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
+         class="vol-button"
+         (click)="raiseVolume()">
+        <h1> + </h1>
+    </div>
+
+    <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
+         class="vol-button"
+         (click)="lowerVolume()">
+        <h1> - </h1>
+    </div>
+
+    <div class="overlay" fxLayout="row" fxLayoutAlign="center center">
+        <div class="hud">
+            <h2>
+                {{current_volume.master.pct}}%
+            </h2>
+        </div>
+    </div>
+</div>
