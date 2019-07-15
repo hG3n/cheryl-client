@@ -8,7 +8,7 @@ import {Url} from './lib/Url';
 })
 export class ApiService {
 
-    private base_url = '192.168.178.63/api';
+    private base_url = '192.168.178.40/api';
 
     constructor(private http: HttpClient) {
     }
