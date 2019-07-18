@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   api: {
-    base: '192.168.178.40',
+    base: '192.168.178.25',
     api: 'api'
   }
 };
