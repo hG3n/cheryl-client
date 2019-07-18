@@ -1,6 +1,6 @@
 echo "Starting deployment"
 echo "   Building..."
-ng build --prod --no-progress
+ng build --configuration=dev --no-progress
 
 echo "  Deploying archive"
-scp -r dist/cheryl-client pi@192.168.178.40:/home/pi/
+scp -r dist/cheryl-client pi@192.168.178.25:/home/pi/static/

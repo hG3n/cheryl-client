@@ -2,20 +2,20 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Url} from './lib/Url';
+import {environment} from '../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ApiService {
 
-    private base_url = '192.168.178.40/api';
-
     constructor(private http: HttpClient) {
     }
 
     public raiseVolume(precision: false): Observable<any> {
         const url = new Url('standard');
-        url.push(this.base_url);
+        url.push(environment.api.base);
+        url.push(environment.api.path);
         url.push('volume');
         url.push('raise');
 
@@ -28,7 +28,8 @@ export class ApiService {
 
     public lowerVolume(precision: false): Observable<any> {
         const url = new Url('standard');
-        url.push(this.base_url);
+        url.push(environment.api.base);
+        url.push(environment.api.path);
         url.push('volume');
         url.push('lower');
 
@@ -41,7 +42,8 @@ export class ApiService {
 
     public getVolume(): Observable<any> {
         const url = new Url('standard');
-        url.push(this.base_url);
+        url.push(environment.api.base);
+        url.push(environment.api.path);
         url.push('volume');
 
         return this.http.get(url.toString());

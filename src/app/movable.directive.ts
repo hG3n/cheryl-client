@@ -1,4 +1,5 @@
 import {Directive, ElementRef, HostListener, OnInit, Renderer2} from '@angular/core';
+import {elementAt} from 'rxjs/operators';
 
 @Directive({
     selector: '[slider]'
@@ -17,7 +18,7 @@ export class MovableDirective implements OnInit {
 
     ngOnInit() {
         this.element_origin = this.element.nativeElement.getBoundingClientRect().y;
-        this.container_height = this.element.nativeElement.parentNode.offsetHeight;
+        this.container_height = this.element.nativeElement.parentNode.offsetHeight - this.element.nativeElement.offsetHeight;
     }
 
     @HostListener('mousedown', ['$event'])
@@ -50,16 +51,18 @@ export class MovableDirective implements OnInit {
             const touch_y = event.touches[0].clientY;
 
             let result = touch_y - this.element_origin;
-            if (result <= 24) {
+            if (result <= this.element.nativeElement.offsetHeight / 2) {
                 result = 24;
             }
-            if (result >= this.container_height - 48) {
-                result = this.container_height - 48;
+            if (result >= this.container_height) {
+                result = this.container_height -this.element.nativeElement.offsetHeight;
             }
+            console.log('element origin', this.element_origin,
+                'touch y:', touch_y,
+                ' result', result,
+                'container height', this.container_height);
 
-            // console.log('element origin', this.element_origin, 'touch y:', touch_y, ' result', result, 'container height', this.container_height);
-
-            this.renderer.setStyle(this.element.nativeElement, 'top', `${result - 24}px`);
+            this.renderer.setStyle(this.element.nativeElement, 'top', `${result - this.element.nativeElement.offsetHeight/2}px`);
         }
     }
 

@@ -1,42 +1,38 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ApiService} from '../api.service';
-import {Subject} from 'rxjs';
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
 
-    private onGetVolume: Subject<boolean> = new Subject<boolean>();
-    public current_volume = {master: {pct: 0}, left: {pct: 0}, right: {pct: 0}};
+    public current_volume = {master: {pct: 12}, left: {pct: 0}, right: {pct: 0}};
 
     constructor(private api: ApiService) {
     }
 
     ngOnInit() {
-        this.onGetVolume.subscribe(
-            () => {
-                this.api.getVolume().subscribe(
-                    (response) => {
-                        if (response.success) {
-                            this.current_volume = response.message.volumes;
-                        }
-                        console.log(this.current_volume);
-                    },
-                    (error) => {
-                        console.log(error);
-                    }
-                );
+    }
+
+    ngAfterViewInit(): void {
+        this.api.getVolume().subscribe(
+            (response) => {
+                this.current_volume = response.volumes;
+            },
+            (error) => {
+                console.log(error);
             }
         );
     }
 
+
     raiseVolume(): void {
         this.api.raiseVolume(false).subscribe(
             (response) => {
-                this.onGetVolume.next(true);
+                console.log(response);
+                this.current_volume = response.volumes;
             },
             (error) => {
                 console.log(error);
@@ -47,7 +43,7 @@ export class DashboardComponent implements OnInit {
     lowerVolume(): void {
         this.api.lowerVolume(false).subscribe(
             (response) => {
-                this.onGetVolume.next(true);
+                this.current_volume = response.volumes;
             },
             (error) => {
                 console.log(error);
