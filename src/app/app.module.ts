@@ -6,11 +6,15 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {HttpClientModule} from '@angular/common/http';
+import { SliderComponent } from './slider/slider.component';
+import { MovableDirective } from './movable.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
+    SliderComponent,
+    MovableDirective
   ],
   imports: [
     BrowserModule,

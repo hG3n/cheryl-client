@@ -1,0 +1,25 @@
+{
+    "short_name": "Cheryl",
+    "name": "Cheryl aka Cherlene sends her tunes.",
+    "display": "standalone",
+    "background_color": "#303030",
+    "theme_color": "#2196F3",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "icons/remote-icon-1x.png",
+            "type": "image/png",
+            "sizes": "48x48"
+        },
+        {
+            "src": "icons/remote-icon-2x.png",
+            "type": "image/png",
+            "sizes": "96x96"
+        },
+        {
+            "src": "icons/remote-icon-4x.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        }
+    ]
+}

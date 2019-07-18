@@ -1,60 +1,26 @@
-$swe-divider: #ccc;
-$swe-grey-dark: #939393;
-$swe-background: #fff;
-//$swe-grey: #F1F1F1;
-$swe-grey: #ebebeb;
+$palette-main: #363834;
+$palette-shade-green-0: #474F46;
+$palette-shade-green-1: #3D453E;
+$palette-shade-orange-0: #4E4F46;
+$palette-shade-orange-1: #45443D;
 
-$swe-save-green: #4baf8d;
-$swe-tree-highlight: #D9CF27;
-$swe-abort-red: #c81717;
-
-.swe-green {
-    color: $swe-save-green;
+.palette-main {
+    background: $palette-main;
 }
 
-.swe-highlight-bg {
-    color: $swe-tree-highlight;
+.palette-shade-green-0 {
+    background: $palette-shade-green-0;
 }
 
-.swe-red {
-    color: $swe-abort-red;
+.palette-shade-green-1 {
+    background: $palette-shade-green-1;
 }
 
-/**
- * Source colors
- */
-$swe-source-grey: rgb(139, 141, 142);
-.swe-source-grey {
-    background: $swe-source-grey;
+.palette-shade-orange-0 {
+    background: $palette-shade-orange-0;
 }
 
-$swe-source-mobility-red: rgb(208, 16, 58);
-.swe-source-mobility-red {
-    background: $swe-source-mobility-red;
-}
-
-$swe-source-supply-green: rgb(0, 133, 102);
-.swe-source-supply-green {
-    background: $swe-source-supply-green;
-}
-
-$swe-source-environment-orange: rgb(227, 114, 34);
-.swe-source-environment-orange {
-    background: $swe-source-environment-orange;
-}
-
-$swe-source-free-time-blue: rgb(0, 152, 219);
-.swe-source-free-time-blue {
-    background: $swe-source-free-time-blue;
-}
-
-$swe-source-service-dark-blue: rgb(51, 53, 148);
-.swe-source-service-dark-blue {
-    background: $swe-source-service-dark-blue;
-}
-
-$swe-source-other-source-gray: rgb(242, 242, 242);
-.swe-source-other-source-gray {
-    background: $swe-source-other-source-gray;
+.palette-shade-orange-1 {
+    background: $palette-shade-orange-1;
 }
 

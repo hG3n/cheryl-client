@@ -1,21 +1,44 @@
-<div class="container" fxLayout="column">
-    <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
-         class="vol-button"
-         (click)="raiseVolume()">
-        <h1> + </h1>
-    </div>
+<div class="container palette-main" fxLayout="column" fxLayoutAlign="start center">
 
-    <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
-         class="vol-button"
-         (click)="lowerVolume()">
-        <h1> - </h1>
-    </div>
+    <div fxFlex="15" class="full-w" fxLayout="column">
 
-    <div class="overlay" fxLayout="row" fxLayoutAlign="center center">
-        <div class="hud">
-            <h2>
-                {{current_volume.master.pct}}%
-            </h2>
+        <div fxFlex="30" fxLayout="row">
+            Status:
         </div>
+
+        <div fxFlex="70">
+            <div>
+                {{current_volume.master.pct}}
+            </div>
+        </div>
+
     </div>
+
+    <div fxFlex="85" fxLayout="row" fxLayoutAlign="start start"
+         class="full-w">
+
+        <div fxFlex="33.3" class="full-h palette-shade-green-1 p-v-l p-h-x">
+            <app-slider></app-slider>
+        </div>
+
+        <div fxFlex="33.3" class="full-h palette-shade-green-1 p-v-l p-h-x">
+            <app-slider></app-slider>
+        </div>
+
+        <div fxFlex="33.3" fxLayout="column" fxLayoutAlign="" class="full-h">
+            <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
+                 class="button palette-shade-orange-0"
+                 (click)="raiseVolume()">
+                <h1> + </h1>
+            </div>
+
+            <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
+                 class="button palette-shade-orange-0"
+                 (click)="lowerVolume()">
+                <h1> - </h1>
+            </div>
+        </div>
+
+    </div>
+
 </div>

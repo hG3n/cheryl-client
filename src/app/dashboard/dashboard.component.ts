@@ -10,7 +10,7 @@ import {Subject} from 'rxjs';
 export class DashboardComponent implements OnInit {
 
     private onGetVolume: Subject<boolean> = new Subject<boolean>();
-    private current_volume = {master: {pct: 0}, left: {pct: 0}, right: {pct: 0}};
+    public current_volume = {master: {pct: 0}, left: {pct: 0}, right: {pct: 0}};
 
     constructor(private api: ApiService) {
     }
