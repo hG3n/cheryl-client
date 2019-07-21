@@ -40,6 +40,17 @@ export class ApiService {
         return this.http.post(url.toString(), body);
     }
 
+    public setVolume(value: number): Observable<any> {
+        const url = new Url('standard');
+        url.push(environment.api.base);
+        url.push(environment.api.path);
+        url.push('volume');
+        url.push('discrete');
+        url.push(value.toString());
+
+        return this.http.put(url.toString(), null);
+    }
+
     public getVolume(): Observable<any> {
         const url = new Url('standard');
         url.push(environment.api.base);
@@ -47,6 +58,45 @@ export class ApiService {
         url.push('volume');
 
         return this.http.get(url.toString());
+    }
+
+    public muteSystem(): Observable<any> {
+        const url = new Url('standard');
+        url.push(environment.api.base);
+        url.push(environment.api.path);
+        url.push('volume');
+        url.push('mute');
+
+        return this.http.put(url.toString(), null);
+    }
+
+    public getInfo(): Observable<any> {
+        const url = new Url('standard');
+        url.push(environment.api.base);
+        url.push(environment.api.path);
+        url.push('info');
+
+        return this.http.get(url.toString());
+    }
+
+    public getEqualizer(): Observable<any> {
+        const url = new Url('standard');
+        url.push(environment.api.base);
+        url.push(environment.api.path);
+        url.push('equalizer');
+
+        return this.http.get(url.toString());
+    }
+
+    public setEqualizer(id: number, value: number): Observable<any> {
+        const url = new Url('standard');
+        url.push(environment.api.base);
+        url.push(environment.api.path);
+        url.push('equalizer');
+        url.push(id.toString());
+        url.push(value.toString());
+
+        return this.http.put(url.toString(), null);
     }
 
 }

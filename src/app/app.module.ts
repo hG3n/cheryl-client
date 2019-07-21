@@ -10,13 +10,21 @@ import { SliderComponent } from './slider/slider.component';
 import { MovableDirective } from './movable.directive';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { EqualizerComponent } from './equalizer/equalizer.component';
+import { VolumeLevelComponent } from './volume-level/volume-level.component';
+import { EqualizerLevelsComponent } from './equalizer-levels/equalizer-levels.component';
+import { EqualizerDiagramComponent } from './equalizer-diagram/equalizer-diagram.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     SliderComponent,
-    MovableDirective
+    MovableDirective,
+    EqualizerComponent,
+    VolumeLevelComponent,
+    EqualizerLevelsComponent,
+    EqualizerDiagramComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,18 @@
+<div class="container" fxLayout="column" fxLayoutAlign="start center">
+    <div fxFlex="30" class="full-w palette-main">
+        foo
+    </div>
+    <div fxFlex="70" fxLayout="row" class="equalizer-container palette-shade-green-0">
+        <div *ngFor="let eq of equalizers" class="full-h m-h-m">
+            <div fxFlex="100px">
+                <app-slider
+                    [label]="eq.channel.name"
+                    [id]="eq.channel.position"
+                    [value]="eq.levels.master.pct"
+                    (slider-change)="onSliderChange($event)">
+                </app-slider>
+            </div>
+        </div>
+
+    </div>
+</div>

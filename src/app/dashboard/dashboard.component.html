@@ -1,14 +1,27 @@
 <div class="container palette-main" fxLayout="column" fxLayoutAlign="start center">
 
-    <div fxFlex="15" class="full-w" fxLayout="column">
+    <div fxFlex="15" class="full-w p-a-m" fxLayout="column">
 
-        <div fxFlex="30" fxLayout="row">
-            Status:
+        <div fxFlex="30" fxLayout="row" fxLayoutAlign="start center">
+            <div fxFlex="30">
+                Status:
+            </div>
+            <div fxFlex="70">
+                {{connected ? "Connected" : "Disconnected"}}
+            </div>
         </div>
 
-        <div fxFlex="70">
+        <div fxFlex="40" fxLayout="row" fxLayoutAlign="start center">
             <div>
-                {{current_volume.master.pct}}
+                {{current_levels.master.pct}}
+            </div>
+        </div>
+
+        <div fxFlex="30" fxLayout="row" fxLayoutAlign="center center">
+            <div fxFlex="100">
+                <app-volume-level
+                    [level]="current_levels.master.pct">
+                </app-volume-level>
             </div>
         </div>
 
@@ -17,25 +30,37 @@
     <div fxFlex="85" fxLayout="row" fxLayoutAlign="start start"
          class="full-w">
 
-        <div fxFlex="33.3" class="full-h palette-shade-green-1 p-v-l p-h-x">
-            <app-slider></app-slider>
+        <div fxFlex="33.3" fxLayout="column"
+             class="full-h palette-shade-green-1">
+
+            <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
+                 class="button" routerLink="/equalizer">
+                <i class="material-icons">equalizer</i>
+            </div>
+            <div fxFlex="25" fxLayout="row" fxLayoutAlign="center center"
+                 class="button" (click)="mute()">
+                <i class="material-icons">{{muted ? 'volume_mute' : 'volume_off'}}</i>
+            </div>
         </div>
 
         <div fxFlex="33.3" class="full-h palette-shade-green-1 p-v-l p-h-x">
-            <app-slider></app-slider>
+            <app-slider [value]="current_levels.master.pct"
+                        label="Speaker"
+                        (slider-change)="setVolume($event.value)">
+            </app-slider>
         </div>
 
         <div fxFlex="33.3" fxLayout="column" fxLayoutAlign="" class="full-h">
             <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
                  class="button palette-shade-orange-0"
                  (click)="raiseVolume()">
-                <h1> + </h1>
+                <i class="material-icons">volume_up</i>
             </div>
 
             <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
                  class="button palette-shade-orange-0"
                  (click)="lowerVolume()">
-                <h1> - </h1>
+                <i class="material-icons">volume_down</i>
             </div>
         </div>
 

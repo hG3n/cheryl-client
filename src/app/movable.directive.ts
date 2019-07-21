@@ -1,16 +1,37 @@
-import {Directive, ElementRef, HostListener, OnInit, Renderer2} from '@angular/core';
-import {elementAt} from 'rxjs/operators';
+import {
+    Directive,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    Renderer2,
+    SimpleChange,
+    SimpleChanges
+} from '@angular/core';
+import {BehaviorSubject, Subject} from 'rxjs';
 
 @Directive({
     selector: '[slider]'
 })
-export class MovableDirective implements OnInit {
+export class MovableDirective implements OnInit, OnChanges {
+
+    @Input('value') value: number = 0;
+    @Input('update-rate') update_rate: number = 0;
+
+    @Output('change') change = new EventEmitter<number>();
 
     private mouse_down: boolean = false;
     private touch_down: boolean = false;
 
-    private element_origin = null;
-    private container_height = null;
+    private element_origin = 0;
+    private container_height = 0;
+
+    private update_counter = 0;
+
+    private onChanges = new BehaviorSubject<SimpleChanges>(null);
 
     constructor(private element: ElementRef,
                 private renderer: Renderer2) {
@@ -19,6 +40,32 @@ export class MovableDirective implements OnInit {
     ngOnInit() {
         this.element_origin = this.element.nativeElement.getBoundingClientRect().y;
         this.container_height = this.element.nativeElement.parentNode.offsetHeight - this.element.nativeElement.offsetHeight;
+
+        const mapped = this.mapToRange(this.value,
+            100, 0,
+            this.element.nativeElement.offsetHeight / 2 + this.element_origin,
+            this.container_height + this.element.nativeElement.offsetHeight / 2 + this.element_origin);
+        this.moveElement(100 - mapped);
+
+        this.onChanges.subscribe(
+            (change) => {
+                const mapped = this.mapToRange(change.value.currentValue,
+                    100, 0,
+                    this.element.nativeElement.offsetHeight / 2 + this.element_origin,
+                    this.container_height + this.element.nativeElement.offsetHeight / 2 + this.element_origin);
+                this.moveElement(mapped);
+            }
+        );
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        this.value = changes.value.currentValue;
+        const mapped = this.mapToRange(this.value,
+            100, 0,
+            this.element.nativeElement.offsetHeight / 2 + this.element_origin,
+            this.container_height + this.element.nativeElement.offsetHeight / 2 + this.element_origin);
+        this.moveElement(mapped);
+        this.onChanges.next(changes);
     }
 
     @HostListener('mousedown', ['$event'])
@@ -27,9 +74,14 @@ export class MovableDirective implements OnInit {
     }
 
     @HostListener('mousemove', ['$event'])
-    onClick(event: MouseEvent) {
+    onMouseMove(event: MouseEvent) {
         if (this.mouse_down) {
-            // console.log(event);
+            const mouse_y = event.clientY;
+            // todo
+
+            if (mouse_y < this.container_height && mouse_y > this.element_origin) {
+                this.change.emit(this.moveElement(mouse_y));
+            }
         }
     }
 
@@ -38,7 +90,7 @@ export class MovableDirective implements OnInit {
         this.mouse_down = false;
     }
 
-    /// TOUCH
+
     @HostListener('touchstart', ['$event'])
     onTouchStart(event: TouchEvent) {
         // console.log(event);
@@ -48,27 +100,38 @@ export class MovableDirective implements OnInit {
     @HostListener('touchmove', ['$event'])
     onTouchMove(event: TouchEvent) {
         if (this.touch_down) {
-            const touch_y = event.touches[0].clientY;
-
-            let result = touch_y - this.element_origin;
-            if (result <= this.element.nativeElement.offsetHeight / 2) {
-                result = 24;
+            const value = this.moveElement(event.touches[0].clientY);
+            if (this.update_counter % this.update_rate === 0) {
+                this.change.emit(value);
+                this.update_counter = this.update_rate;
             }
-            if (result >= this.container_height) {
-                result = this.container_height -this.element.nativeElement.offsetHeight;
-            }
-            console.log('element origin', this.element_origin,
-                'touch y:', touch_y,
-                ' result', result,
-                'container height', this.container_height);
-
-            this.renderer.setStyle(this.element.nativeElement, 'top', `${result - this.element.nativeElement.offsetHeight/2}px`);
+            ++this.update_counter;
         }
     }
 
     @HostListener('touchend', ['$event'])
     onTouchEnd(event: TouchEvent) {
         this.touch_down = false;
+    }
+
+    private moveElement(current_y): number {
+        let result = current_y - this.element_origin;
+        if (result <= this.element.nativeElement.offsetHeight / 2) {
+            result = 24;
+        }
+        if (result >= this.container_height + this.element.nativeElement.offsetHeight / 2) {
+            result = this.container_height + this.element.nativeElement.offsetHeight / 2;
+        }
+
+        this.renderer.setStyle(this.element.nativeElement, 'top', `${result - this.element.nativeElement.offsetHeight / 2}px`);
+        const mapped = this.mapToRange(result,
+            this.element.nativeElement.offsetHeight / 2, this.container_height + this.element.nativeElement.offsetHeight / 2,
+            0, 100);
+        return 100 - mapped;
+    }
+
+    private mapToRange(x: number, in_min: number, in_max: number, out_min: number, out_max: number): number {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
 
 }

@@ -1,17 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 @import "styles/colors";
+@import "styles/icons";
 @import "styles/spacer";
 @import "styles/typography";
 @import "styles/variables";
 
 html, body {
     height: 100%;
+    width: 100%;
+    overflow: hidden;
 }
 
 body {
     padding: 0;
     margin: 0;
     overscroll-behavior: contain;
+
+    overflow: hidden;
+
+    font-family: 'Josefin Sans', sans-serif;
+    color: #d5d5d5;
 }
 
 .full-w {

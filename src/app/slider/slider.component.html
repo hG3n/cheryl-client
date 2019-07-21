@@ -1,6 +1,20 @@
-<div class="container">
-    <div slider class="slider">
+<div fxLayout="column" class="full-h">
+    <div fxFlex="10" fxLayout="row" fxLayoutAlign="center center">
+        {{parseValue(this.value)}}
     </div>
-    <div class="indicator"></div>
+    <div fxFlex="80" class="full-h p-h-m">
+        <div class="slider-container">
+            <div slider [value]="value" [update-rate]="12" (change)="onMovableChange($event)" class="slider"></div>
+            <span class="scale-v"></span>
+            <span class="scale-h top"></span>
+            <span class="scale-h center"></span>
+            <span class="scale-h bottom"></span>
+            <!--    <ng-container *ngFor="let item of scale_points">-->
+            <!--        <span class='scale-h' [ngStyle]="calcScaleItemPosition(item)"></span>-->
+            <!--    </ng-container>-->
+        </div>
+    </div>
+    <div fxFlex="10" fxLayout="row" fxLayoutAlign="center center">
+        {{label}}
+    </div>
 </div>
-

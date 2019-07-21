@@ -1,0 +1,23 @@
+.container {
+    border: 1px solid #1f1f1f;
+
+    .indicator {
+        transition: padding-left 100ms;
+        transition-timing-function: linear;
+        height: 24px;
+
+        &.normal {
+            background: green;
+        }
+
+        &.medium {
+            background: yellow;
+        }
+
+        &.danger {
+            background: red;
+        }
+    }
+
+}
+
