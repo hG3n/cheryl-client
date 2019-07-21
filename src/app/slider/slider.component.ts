@@ -11,6 +11,7 @@ export class SliderComponent implements OnInit, OnChanges {
     @Input('label') label: string = '';
     @Input('id') id: number;
     @Input('scale-resolution') resolution: number = 10;
+    @Input('update-rate') update_rate: number = 10;
     @Output('slider-change') slider_change = new EventEmitter<SliderEvent>();
 
     // private scale_points: Array<number> = [];

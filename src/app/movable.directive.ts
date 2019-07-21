@@ -12,6 +12,7 @@ import {
     SimpleChanges
 } from '@angular/core';
 import {BehaviorSubject, Subject} from 'rxjs';
+import {init} from 'protractor/built/launcher';
 
 @Directive({
     selector: '[slider]'
@@ -32,6 +33,8 @@ export class MovableDirective implements OnInit, OnChanges {
     private update_counter = 0;
 
     private onChanges = new BehaviorSubject<SimpleChanges>(null);
+
+    private initialized: boolean = false;
 
     constructor(private element: ElementRef,
                 private renderer: Renderer2) {
@@ -56,6 +59,7 @@ export class MovableDirective implements OnInit, OnChanges {
                 this.moveElement(mapped);
             }
         );
+        this.initialized = true;
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -65,7 +69,9 @@ export class MovableDirective implements OnInit, OnChanges {
             this.element.nativeElement.offsetHeight / 2 + this.element_origin,
             this.container_height + this.element.nativeElement.offsetHeight / 2 + this.element_origin);
         this.moveElement(mapped);
-        this.onChanges.next(changes);
+        if (!this.initialized) {
+            this.onChanges.next(changes);
+        }
     }
 
     @HostListener('mousedown', ['$event'])

@@ -1,1 +1,12 @@
-<router-outlet></router-outlet>
+<!--<div class="toast-container">-->
+<app-toast [position]="'bottom'" [display-time]="1000" width="100%" height="50px"></app-toast>
+<!--</div>-->
+
+<div fxLayout="column" class="fill-h">
+    <div fxFlex="80px" class="fill-a palette-main">
+        <app-menu class="fill-a"></app-menu>
+    </div>
+    <div fxFlex="grow">
+        <router-outlet></router-outlet>
+    </div>
+</div>

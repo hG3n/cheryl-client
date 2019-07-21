@@ -2,6 +2,7 @@
 @import "styles/colors";
 @import "styles/icons";
 @import "styles/spacer";
+@import "styles/filler";
 @import "styles/typography";
 @import "styles/variables";
 
@@ -20,22 +21,6 @@ body {
 
     font-family: 'Josefin Sans', sans-serif;
     color: #d5d5d5;
-}
-
-.full-w {
-    width: 100%;
-}
-
-.half-w {
-    width: 50%;
-}
-
-.full-h {
-    height: 100%;
-}
-
-.half-h {
-    height: 50%;
 }
 
 .card {
@@ -121,5 +106,9 @@ body {
 }
 
 
-
+.flex-center {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
 

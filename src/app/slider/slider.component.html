@@ -1,10 +1,10 @@
-<div fxLayout="column" class="full-h">
-    <div fxFlex="10" fxLayout="row" fxLayoutAlign="center center">
+<div fxLayout="column" class="fill-h">
+    <div fxFlex="5" fxLayout="row" fxLayoutAlign="center center">
         {{parseValue(this.value)}}
     </div>
-    <div fxFlex="80" class="full-h p-h-m">
+    <div fxFlex="90" class="fill-h p-h-m">
         <div class="slider-container">
-            <div slider [value]="value" [update-rate]="12" (change)="onMovableChange($event)" class="slider"></div>
+            <div slider [value]="value" [update-rate]="update_rate" (change)="onMovableChange($event)" class="slider"></div>
             <span class="scale-v"></span>
             <span class="scale-h top"></span>
             <span class="scale-h center"></span>
@@ -14,7 +14,7 @@
             <!--    </ng-container>-->
         </div>
     </div>
-    <div fxFlex="10" fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="5" fxLayout="row" fxLayoutAlign="center center">
         {{label}}
     </div>
 </div>

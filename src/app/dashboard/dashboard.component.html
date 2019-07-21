@@ -1,56 +1,42 @@
 <div class="container palette-main" fxLayout="column" fxLayoutAlign="start center">
 
-    <div fxFlex="15" class="full-w p-a-m" fxLayout="column">
-
-        <div fxFlex="30" fxLayout="row" fxLayoutAlign="start center">
-            <div fxFlex="30">
-                Status:
-            </div>
-            <div fxFlex="70">
-                {{connected ? "Connected" : "Disconnected"}}
-            </div>
+    <div fxFlex="10" class="fill-w p-a-m" fxLayout="row" fxLayoutAlign="center center">
+        <div fxFlex class="m-r-m">
+            <i class="material-icons"
+               [ngClass]="connected ? 'palette-success' : 'palette-disabled' ">power_settings_new</i>
         </div>
-
-        <div fxFlex="40" fxLayout="row" fxLayoutAlign="start center">
-            <div>
-                {{current_levels.master.pct}}
-            </div>
+        <div fxFlex="grow">
+            <app-volume-level
+                [level]="current_levels.master.pct">
+            </app-volume-level>
         </div>
-
-        <div fxFlex="30" fxLayout="row" fxLayoutAlign="center center">
-            <div fxFlex="100">
-                <app-volume-level
-                    [level]="current_levels.master.pct">
-                </app-volume-level>
-            </div>
-        </div>
-
     </div>
 
-    <div fxFlex="85" fxLayout="row" fxLayoutAlign="start start"
-         class="full-w">
+    <div fxFlex="grow" fxLayout="row" fxLayoutAlign="start start"
+         class="fill-w">
 
         <div fxFlex="33.3" fxLayout="column"
-             class="full-h palette-shade-green-1">
+             class="fill-h palette-shade-green-1">
 
             <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
-                 class="button" routerLink="/equalizer">
+                 class="button palette-shade-orange-1" routerLink="/equalizer">
                 <i class="material-icons">equalizer</i>
             </div>
             <div fxFlex="25" fxLayout="row" fxLayoutAlign="center center"
-                 class="button" (click)="mute()">
+                 class="button palette-shade-orange-1" (click)="mute()">
                 <i class="material-icons">{{muted ? 'volume_mute' : 'volume_off'}}</i>
             </div>
         </div>
 
-        <div fxFlex="33.3" class="full-h palette-shade-green-1 p-v-l p-h-x">
+        <div fxFlex="33.3" class="fill-h palette-shade-green-1 p-v-l p-h-x">
             <app-slider [value]="current_levels.master.pct"
                         label="Speaker"
-                        (slider-change)="setVolume($event.value)">
+                        (slider-change)="setVolume($event.value)"
+                        [update-rate]="12">
             </app-slider>
         </div>
 
-        <div fxFlex="33.3" fxLayout="column" fxLayoutAlign="" class="full-h">
+        <div fxFlex="33.3" fxLayout="column" fxLayoutAlign="" class="fill-h">
             <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
                  class="button palette-shade-orange-0"
                  (click)="raiseVolume()">
@@ -65,5 +51,5 @@
         </div>
 
     </div>
-
 </div>
+

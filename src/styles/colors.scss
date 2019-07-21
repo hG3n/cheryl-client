@@ -24,3 +24,33 @@ $palette-shade-orange-1: #45443D;
     background: $palette-shade-orange-1;
 }
 
+
+$palette-success: #598A28;
+.palette-success-bg {
+    background: $palette-success;
+}
+
+.palette-success {
+    color: $palette-success;
+}
+
+$palette-disabled: #5d615a;
+.palette-disabled-bg {
+    background: $palette-disabled;
+}
+
+.palette-disabled {
+    color: $palette-disabled;
+}
+
+$palette-error: #BA8A94;
+.palette-error-bg {
+    background-color: $palette-error;
+}
+
+.palette-error {
+    color: $palette-disabled;
+}
+
+
+

@@ -14,8 +14,8 @@ export class ApiService {
 
     public raiseVolume(precision: false): Observable<any> {
         const url = new Url('standard');
-        url.push(environment.api.base);
-        url.push(environment.api.path);
+        url.push(environment.api.base.toString());
+        url.push(environment.api.path.toString());
         url.push('volume');
         url.push('raise');
 

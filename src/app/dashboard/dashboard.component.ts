@@ -1,6 +1,10 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '../api.service';
 import {Levels, VolumeResponse} from '../interfaces/volume';
+import {Subscription} from 'rxjs';
+import {ToastService} from '../toast/toast.service';
+import {MenuConfig, MenuService} from '../menu/menu.service';
+import {ui} from '../ui.constants';
 
 @Component({
     selector: 'app-dashboard',
@@ -14,26 +18,33 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     private connection_interval = null;
 
     public connected: boolean = false;
-    private muted: boolean = false;
+    public muted: boolean = false;
 
-    constructor(private api: ApiService) {
+    private subscriptions: Subscription[] = [];
+
+    constructor(private api: ApiService,
+                private toast: ToastService,
+                private menu: MenuService) {
     }
 
     ngOnInit() {
     }
 
     ngAfterViewInit(): void {
-        this.api.getVolume().subscribe(
+        const volume_sub = this.api.getVolume().subscribe(
             (response: VolumeResponse) => {
                 console.log(response);
                 this.connected = true;
                 this.current_levels = response.levels;
                 this.muted = response.levels.master.muted;
+                this.toast.showToast('Connected to Server');
             },
             (error) => {
                 console.log(error);
             }
         );
+        this.subscriptions.push(volume_sub);
+
 
         setInterval(() => {
             this.api.getInfo().subscribe(
@@ -45,11 +56,17 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             );
         }, 10000);
+
+        this.menu.setMenu(ui.menus.dashboard);
     }
 
     ngOnDestroy(): void {
         if (this.connection_interval !== 0) {
             clearInterval(this.connection_interval);
+        }
+
+        for (const element of this.subscriptions) {
+            element.unsubscribe();
         }
     }
 
