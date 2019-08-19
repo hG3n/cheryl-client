@@ -12,12 +12,14 @@ import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
 import {EqualizerComponent} from './equalizer/equalizer.component';
 import {VolumeLevelComponent} from './volume-level/volume-level.component';
-import {EqualizerLevelsComponent} from './equalizer-levels/equalizer-levels.component';
 import {EqualizerDiagramComponent} from './equalizer-diagram/equalizer-diagram.component';
 import {HighchartsChartModule} from 'highcharts-angular';
 import {MenuComponent} from './menu/menu.component';
-import { ToastComponent } from './toast/toast.component';
+import {ToastComponent} from './toast/toast.component';
 import {ToastService} from './toast/toast.service';
+import {DropdownComponent} from './dropdown/dropdown.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {InteractionService} from './interaction.service';
 
 @NgModule({
     declarations: [
@@ -27,20 +29,21 @@ import {ToastService} from './toast/toast.service';
         MovableDirective,
         EqualizerComponent,
         VolumeLevelComponent,
-        EqualizerLevelsComponent,
         EqualizerDiagramComponent,
         MenuComponent,
-        ToastComponent
+        ToastComponent,
+        DropdownComponent
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         AppRoutingModule,
         FlexLayoutModule,
         HttpClientModule,
         ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
         HighchartsChartModule
     ],
-    providers: [ToastService],
+    providers: [ToastService, InteractionService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

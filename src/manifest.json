@@ -2,6 +2,7 @@
     "name": "Cheryl aka Cherlene sends her tunes.",
     "short_name": "Cheryl",
     "display": "standalone",
+    "orientation": "portrait",
     "background_color": "#303030",
     "theme_color": "#2196F3",
     "start_url": "/",

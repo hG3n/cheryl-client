@@ -53,4 +53,13 @@ $palette-error: #BA8A94;
 }
 
 
+$palette-warn: #FFF24F;
+.palette-warn-bg {
+    background-color: $palette-warn;
+}
+
+.palette-warn {
+    color: $palette-disabled;
+}
+
 

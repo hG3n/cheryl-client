@@ -1,4 +1,4 @@
-import {Levels} from './volume';
+import {Levels} from './Volume';
 
 export interface Equalizer {
     channel: {

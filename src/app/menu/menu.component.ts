@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MenuConfig, MenuService} from './menu.service';
 import {Subscription} from 'rxjs';
+import {MenuConfig} from '../lib/Menu';
+import {MenuService} from './menu.service';
 
 @Component({
     selector: 'app-menu',
@@ -28,6 +29,10 @@ export class MenuComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.get_menu_subscription.unsubscribe();
+    }
+
+    optionSelected(tag: string): void {
+        this.menu.onOptionSelected.next(tag);
     }
 
 }

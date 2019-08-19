@@ -114,7 +114,6 @@
                         "production": {
                             "browserTarget": "cheryl-client:build:production"
                         },
-
                         "dev": {
                             "browserTarget": "cheryl-client:build:dev"
                         }

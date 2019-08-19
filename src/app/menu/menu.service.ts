@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
+import {MenuConfig} from '../lib/Menu';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MenuService {
     public onSetMenu: Subject<MenuConfig> = new Subject();
+    public onOptionSelected: Subject<string> = new Subject();
 
     constructor() {
     }
@@ -15,15 +17,4 @@ export class MenuService {
     }
 }
 
-export interface MenuItem {
-    title: string;
-    tag: string;
-}
 
-export interface MenuConfig {
-    title: string;
-    menu: {
-        icon: string;
-        items: MenuItem[];
-    };
-}

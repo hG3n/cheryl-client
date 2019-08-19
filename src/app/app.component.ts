@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {SwUpdate} from '@angular/service-worker';
+import {ToastService} from './toast/toast.service';
 
 
 @Component({
@@ -8,8 +9,8 @@ import {SwUpdate} from '@angular/service-worker';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    constructor(
-        private swUpdate: SwUpdate) {
+    constructor(private swUpdate: SwUpdate,
+                private toast: ToastService) {
         // this.setupPush();
 
         // this.setupUpdates();
@@ -17,21 +18,12 @@ export class AppComponent {
 
     setupUpdates() {
         this.swUpdate.available.subscribe(u => {
-            // Update wurde entdeckt
-
-            // Update herunterladen
             this.swUpdate.activateUpdate().then(e => {
-                // Update wurde heruntergeladen
+                this.toast.showToast('Application has been updated, Reloading in 5 seconds.');
+                setTimeout(() => {
+                    location.reload();
+                }, 5000);
 
-                const message = 'Application has been updated';
-                const action = 'Ok, Reload!';
-
-                location.reload();
-
-                // Benutzer auf Update hinweisen und Seite neu laden
-                // this.snackBar.open(message, action).onAction().subscribe(
-                //     () => location.reload()
-                // );
             });
         });
 

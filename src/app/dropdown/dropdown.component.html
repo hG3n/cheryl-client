@@ -1,0 +1,24 @@
+<button class="button" (click)="toggleVisible()"
+        fxLayout="row" fxLayoutAlign="center center">
+
+    <span [ngClass]="{ 'p-r-s': title !== ''}">
+            <i class="material-icons">{{icon}}</i>
+    </span>
+
+    {{title}}
+
+    <span *ngIf="show_selected"
+          [fxShow]="last_selected != ''">
+     &nbsp;{{last_selected}}
+    </span>
+</button>
+
+<div #dropdown class="container" [fxShow]="visible">
+    <ul class="option-list">
+        <li *ngFor="let item of options"
+            (click)="elementSelected(item)"
+            class="p-v-m p-h-m">
+            {{item.title}}
+        </li>
+    </ul>
+</div>

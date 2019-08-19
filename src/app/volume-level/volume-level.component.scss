@@ -1,3 +1,5 @@
+@import "../../styles/colors";
+
 .container {
     border: 1px solid #1f1f1f;
 
@@ -7,15 +9,15 @@
         height: 24px;
 
         &.normal {
-            background: green;
+            background: $palette-success
         }
 
         &.medium {
-            background: yellow;
+            background: $palette-warn;
         }
 
         &.danger {
-            background: red;
+            background: $palette-error;
         }
     }
 

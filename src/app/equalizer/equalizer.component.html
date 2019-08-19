@@ -11,7 +11,8 @@
                     [label]="eq.channel.name"
                     [id]="eq.channel.position"
                     [value]="eq.levels.master.pct"
-                    (slider-change)="onSliderChange($event)">
+                    (slider-change)="onSliderChange($event)"
+                    [update-rate]="3">
                 </app-slider>
             </div>
         </div>
