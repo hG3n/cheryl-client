@@ -19,7 +19,8 @@ import {ToastComponent} from './toast/toast.component';
 import {ToastService} from './toast/toast.service';
 import {DropdownComponent} from './dropdown/dropdown.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {InteractionService} from './interaction.service';
+import {SocketService} from './socket.service';
+import {StorageService} from './storage.service';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,7 @@ import {InteractionService} from './interaction.service';
         ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
         HighchartsChartModule
     ],
-    providers: [ToastService, InteractionService],
+    providers: [ToastService, SocketService, StorageService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

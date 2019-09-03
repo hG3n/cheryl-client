@@ -5,7 +5,7 @@ import {SliderEvent} from '../slider/slider.component';
 import {Subscription} from 'rxjs';
 import {ui} from '../ui.constants';
 import {MenuService} from '../menu/menu.service';
-import {InteractionService} from '../interaction.service';
+import {SocketService} from '../socket.service';
 import {Message} from '../lib/Message';
 
 @Component({
@@ -22,7 +22,7 @@ export class EqualizerComponent implements OnInit, OnDestroy {
 
     constructor(private api: ApiService,
                 private menu: MenuService,
-                private interaction: InteractionService) {
+                private socket: SocketService) {
     }
 
     ngOnInit() {
@@ -47,7 +47,7 @@ export class EqualizerComponent implements OnInit, OnDestroy {
 
         this.menu.setMenu(ui.menus.equalizer);
 
-        const socket_sub = this.interaction.onMessage.subscribe(
+        const socket_sub = this.socket.onMessage.subscribe(
             (msg: Message) => {
                 if (msg.context === 'equalizer') {
                     const data: Equalizer = msg.data as Equalizer;
@@ -66,8 +66,8 @@ export class EqualizerComponent implements OnInit, OnDestroy {
         );
         this.subscriptions.push(socket_sub);
 
-        if (!this.interaction.isOpen()) {
-            this.interaction.connect();
+        if (!this.socket.isOpen()) {
+            this.socket.connect();
         }
 
     }
@@ -79,21 +79,7 @@ export class EqualizerComponent implements OnInit, OnDestroy {
     }
 
     onSliderChange(event: SliderEvent) {
-        this.interaction.send({method: 'set', context: 'equalizer', data: {position: event.id, value: event.value}});
-        // this.api.setEqualizer(event.id, event.value).subscribe(
-        //     (response: Equalizer) => {
-        //         for (let i = 0; i < this.equalizers.length; ++i) {
-        //             if (this.equalizers[i].channel.position === response.channel.position) {
-        //                 this.equalizers_diag[i] = response;
-        //             }
-        //         }
-        //         const cpy = this.equalizers_diag.slice();
-        //         this.equalizers_diag = cpy;
-        //     },
-        //     (error) => {
-        //         console.log(error);
-        //     }
-        // );
+        this.socket.send({method: 'set', context: 'equalizer', data: {position: event.id, value: event.value}});
     }
 
 }

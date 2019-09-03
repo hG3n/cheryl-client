@@ -38,7 +38,6 @@ export class DropdownComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.options);
     }
 
     @HostListener('document:click', ['$event'])
@@ -57,7 +56,7 @@ export class DropdownComponent implements OnInit {
         if (this.visible) {
             const container_rect = this.element_ref.nativeElement.getBoundingClientRect();
             const screen_width: number = window.screen.availWidth;
-            let position = screen_width - container_rect.x < screen_width / 2 ? 'r' : 'l';
+            const position = screen_width - container_rect.x < screen_width / 2 ? 'r' : 'l';
 
             switch (position) {
                 case 'l':

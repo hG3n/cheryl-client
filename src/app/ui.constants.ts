@@ -10,6 +10,10 @@ const dashboard_menu: MenuConfig = {
                 tag: 'settings'
             },
             {
+                title: 'Raspotify Status',
+                tag: 'status'
+            },
+            {
                 title: 'Restart Raspotify',
                 tag: 'restart'
             }
@@ -43,5 +47,4 @@ export const ui = {
         dashboard: dashboard_menu,
         equalizer: equalizer_menu
     }
-
 };

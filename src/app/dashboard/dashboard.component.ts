@@ -1,13 +1,15 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '../api.service';
-import {Levels, VolumeResponse} from '../interfaces/Volume';
+import {Levels} from '../interfaces/Volume';
 import {Subscription} from 'rxjs';
 import {ToastService} from '../toast/toast.service';
 import {ui} from '../ui.constants';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MenuService} from '../menu/menu.service';
-import {InteractionService} from '../interaction.service';
+import {SocketService} from '../socket.service';
 import {Message} from '../lib/Message';
+import {api} from '../api.constants';
+import {StorageService} from '../storage.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -17,13 +19,13 @@ import {Message} from '../lib/Message';
         trigger('openClose', [
             // ...
             state('open', style({
-                // height: '100%',
+                height: '100%',
             })),
             state('closed', style({
-                // height: '0px',
+                height: '0px',
             })),
             transition('open => closed', [
-                animate('1s', style({
+                animate('10s', style({
                     height: '0px',
                 }))
             ]),
@@ -41,8 +43,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private connection_interval = null;
 
-    public connected: boolean = false;
-    public muted: boolean = false;
+    public connected = false;
+    public muted = false;
 
     private subscriptions: Subscription[] = [];
 
@@ -50,25 +52,28 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     /**
      * c'tor
-     * @param api
-     * @param toast
-     * @param menu
-     * @param interaction
+     * @param api ApiService
+     * @param toast ToastService
+     * @param menu MenuService
+     * @param socket SocketService
      */
     constructor(private api: ApiService,
                 private toast: ToastService,
                 private menu: MenuService,
-                private interaction: InteractionService) {
+                private socket: SocketService,
+                private storage: StorageService) {
     }
 
     /**
      * On init
      */
     ngOnInit() {
-        const socket_sub = this.interaction.onMessage.subscribe(
+        // initialize socket
+        const socket_sub = this.socket.onMessage.subscribe(
             (msg: Message) => {
                 if (msg.context === 'volume') {
                     this.current_levels = msg.data as Levels;
+                    this.muted = this.current_levels.master.muted;
                 }
             },
             (err) => {
@@ -77,8 +82,8 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         );
         this.subscriptions.push(socket_sub);
 
-        if (!this.interaction.isOpen()) {
-            this.interaction.connect();
+        if (!this.socket.isOpen()) {
+            this.socket.connect();
         }
     }
 
@@ -86,12 +91,16 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
      * After view init
      */
     ngAfterViewInit(): void {
+        // get initial volume
         const volume_sub = this.api.getVolume().subscribe(
             (response: Levels) => {
                 this.connected = true;
                 this.current_levels = response;
                 this.muted = response.master.muted;
-                this.toast.showToast('Connected to Server');
+                if (!this.storage.applicationStarted()) {
+                    this.toast.showToast('Connected to Server');
+                    this.storage.setApplicationRunning();
+                }
             },
             (error) => {
                 console.log(error);
@@ -99,14 +108,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         );
         this.subscriptions.push(volume_sub);
 
-        const menu_sub = this.menu.onOptionSelected.subscribe(
-            (item: string) => {
-                console.log('dash menu:', item);
-            }
-        );
-        this.subscriptions.push(menu_sub);
-
-
+        // connection interval
         setInterval(() => {
             this.api.getInfo().subscribe(
                 (response) => {
@@ -118,7 +120,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         }, 10000);
 
-        this.menu.setMenu(ui.menus.dashboard);
+        this.initMenu();
     }
 
     /**
@@ -134,25 +136,69 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    initMenu(): void {
+        // init menu
+        const menu_sub = this.menu.onOptionSelected.subscribe(
+            (item: string) => {
+                console.log('dash menu:', item);
+            }
+        );
+        this.subscriptions.push(menu_sub);
+
+        this.menu.setMenu(ui.menus.dashboard);
+
+        this.menu.onOptionSelected.subscribe(
+            (tag: string) => {
+                switch (tag) {
+                    case 'settings':
+                        this.toast.showToast('Not implemented yet');
+                        break;
+                    case 'status':
+                        this.menuStatusSelected();
+                        break;
+                    case 'restart':
+                        this.menuRestartSelected();
+                        break;
+
+                }
+            }
+        );
+    }
+
+    private menuRestartSelected(): void {
+        this.api.restartRaspotifyServer().subscribe(
+            (response) => {
+                console.log(response);
+            }
+        );
+    }
+
+    private menuStatusSelected(): void {
+        this.api.getRaspotifyStatus().subscribe(
+            (response) => {
+                console.log(response);
+            }
+        );
+    }
 
     setVolume(value): void {
         if (!this.connected) {
             this.toast.showToast('No Interaction possible, not connected to the server');
             return;
         }
-        this.interaction.send({method: 'set', context: 'volume', data: {volume: value}});
+        this.socket.send({method: 'set', context: 'volume', data: {volume: value}});
     }
 
 
     raiseVolume(): void {
         if (!this.connected) {
-            console.log('Not connected to the Server!');
+            this.toast.showToast('Not connected to the Server!');
             return;
         }
         this.api.raiseVolume(false).subscribe(
-            (response: VolumeResponse) => {
-                this.current_levels = response.levels;
-                this.muted = response.levels.master.muted;
+            (response: Levels) => {
+                this.current_levels = response;
+                this.muted = response.master.muted;
             },
             (error) => {
                 console.log(error);
@@ -162,13 +208,13 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     lowerVolume(): void {
         if (!this.connected) {
-            console.log('Not connected to the Server!');
+            this.toast.showToast('Not connected to the Server!');
             return;
         }
         this.api.lowerVolume(false).subscribe(
-            (response: VolumeResponse) => {
-                this.current_levels = response.levels;
-                this.muted = response.levels.master.muted;
+            (response: Levels) => {
+                this.current_levels = response;
+                this.muted = response.master.muted;
             },
             (error) => {
                 console.log(error);
@@ -178,13 +224,13 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
 
     mute(): void {
         if (!this.connected) {
-            console.log('Not connected to the Server!');
+            this.toast.showToast('Not connected to the Server!');
             return;
         }
         this.api.muteSystem().subscribe(
-            (response) => {
-                this.current_levels = response.levels;
-                this.muted = response.levels.master.muted;
+            (response: Levels) => {
+                this.current_levels = response;
+                this.muted = response.master.muted;
             },
             (error) => {
                 console.log(error);
@@ -195,4 +241,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     toggle(): void {
         this.is_active = !this.is_active;
     }
+
+
 }

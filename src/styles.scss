@@ -10,6 +10,8 @@ html, body {
     height: 100%;
     width: 100%;
     overflow: hidden;
+
+    background: $palette-main;
 }
 
 body {
@@ -20,6 +22,10 @@ body {
     overflow: hidden;
 
     font-family: 'Josefin Sans', sans-serif;
+    color: #d5d5d5;
+}
+
+.text {
     color: #d5d5d5;
 }
 
@@ -41,6 +47,11 @@ body {
 
     border: 0;
     outline: none;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
     //height: 44px;
 
@@ -77,6 +88,11 @@ body {
 
     margin-bottom: $margin-m;
 
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
     div {
         font-size: 14px;
     }
@@ -110,5 +126,17 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+}
+
+
+.display-value {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.bb {
+    border-bottom: 1px solid #292e2a;
 }
 

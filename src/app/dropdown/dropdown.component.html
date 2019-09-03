@@ -1,15 +1,8 @@
-<button class="button" (click)="toggleVisible()"
+<button class="button palette-main text" (click)="toggleVisible()"
+        [ngClass]="{'palette-main': !visible, 'palette-shade-green-0': visible}"
         fxLayout="row" fxLayoutAlign="center center">
-
     <span [ngClass]="{ 'p-r-s': title !== ''}">
-            <i class="material-icons">{{icon}}</i>
-    </span>
-
-    {{title}}
-
-    <span *ngIf="show_selected"
-          [fxShow]="last_selected != ''">
-     &nbsp;{{last_selected}}
+        <i class="material-icons">{{icon}}</i>
     </span>
 </button>
 
@@ -17,7 +10,7 @@
     <ul class="option-list">
         <li *ngFor="let item of options"
             (click)="elementSelected(item)"
-            class="p-v-m p-h-m">
+            class="p-v-l p-h-m">
             {{item.title}}
         </li>
     </ul>
